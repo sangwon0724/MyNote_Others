@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="./css/codePrettyPrint.css" />
   </head>
   <body>
-    <section id="intro">
+    <!-- <section id="intro">
         <header class="note_title">DevOn NCD</header>
         <ul>
             <li>xxx
@@ -59,7 +59,7 @@
         </ul>
     </section>
 
-    <br/>
+    <br/> -->
 
     <section id="setting">
       <header class="note_title">설치 및 실행</header>
@@ -79,7 +79,7 @@
             <pre>
               1. startDevOnNCD.cmd 실행하기 (WAS :  Tomcat 8.5.49)
               2. BizActor Management Studio 실행하기
-              3. 접속 정보 입력하기 (Server IP : 127.0.0.1 / Port	18080 / ID : sample / Password : sample)
+              3. 접속 정보 입력하기 (설치시 제공하는 기본 제공 메모장 참고)
             </pre>
           </li>
           <li>
@@ -140,14 +140,13 @@
         <ul>
           <li>종류
               <pre>
-                ● 
-                  ○ Business Rule Service (= BR Service) : 조건/반복/루프/스위치 등의 제어 Logic을 수행하는 Service
-                  ○ Data Access Service (= DA Service) : DB와 관련된 기능을 수행하는 Service, SQL을 수행
-                  ○ Service Access Service (= SA Service) : 외부 시스템과의 연계를 담당하는 Service
+                ● Business Rule Service (= BR Service) : 조건/반복/루프/스위치 등의 제어 Logic을 수행하는 Service
+                ● Data Access Service (= DA Service) : DB와 관련된 기능을 수행하는 Service, SQL을 수행
+                ● Service Access Service (= SA Service) : 외부 시스템과의 연계를 담당하는 Service
 
-                  ※ BR Service에서는 DA/SA/BR Service를 호출한다.
-                  ※ 복잡한 비즈니스 Logic은 대부분 BR Service로 구현한다.
-                  ※ SA Service 사용시 DevOn NCD에서 정의한 형태의 Adapter 작성이 필요하다.
+                ※ BR Service에서는 DA/SA/BR Service를 호출한다.
+                ※ 복잡한 비즈니스 Logic은 대부분 BR Service로 구현한다.
+                ※ SA Service 사용시 DevOn NCD에서 정의한 형태의 Adapter 작성이 필요하다.
               </pre>
           </li>
           <li>서비스의 상태 - 정의
@@ -156,6 +155,7 @@
                     ○ 서비스가 최초로 생성된 상태
                     ○ 아무런 제약 없이 수정 가능
                     ○ 다른 BR Service에서 호출 불가
+                    ○ <div class="colorRed">서비스는 C* 상태에서만 삭제할 수 있다.</div>
                   ● <span class="colorBlue">A</span>
                     ○ 서비스를 모듈화 시킨 상태
                     ○ 다른 BR Service에서 호출 가능
@@ -204,6 +204,17 @@
                   1. 그룹 생성 : Business Rule 우클릭 → Add Group → OK
                   2. 컴포넌트 생성 : 컴포넌트를 생성할 그룹 우클릭 → Add Component → 항목 입력 → Apply
                   3. 서비스 생성 : 서비스를 생성할 컴포넌트 우클릭 → Add Service → 항목 입력 → Next → Apply
+              </pre>
+          </li>
+          <li>히스토리 관리
+              <pre>
+                  1. 서비스를 선택
+                  2. 하단 영역의 History 탭을 클릭하여 영역 활성화
+                  3. History 영역에서 기록 확인
+                  4-1. 특정 버전의 작성 기록을 확인하고 싶을 때 : 해당 버전을 선택 → 우클릭 → View를 선택하면 된다.
+                  4-2. 특정 버전의 기록을 현재 상태와 비교 하고 싶을 떄 : 해당 버전을 선택 → 우클릭 → Compare를 선택하면 된다.
+                  4-3. 특정 버전의 상태로 서비스를 되돌리고 싶을 때에는 해당 버전을 선택한 후 오른쪽 위의 "Rollback"을 클릭한다.
+                  ※ 서비스 상태나 서비스 관련 값들도 해당 버전으로 롤백됨으로 주의가 필요하다.
               </pre>
           </li>
         </ul>
@@ -348,6 +359,10 @@
                     ● System
                       ○ RsltNum : CALL Step으로 DA Service 실행 시 데이터 Fetch 건수
                       ○ RsltMsg : CALL Step에서 Ignore 선택한 후, 해당 Step 이 Exception 발생하면 Error Message 가 저장되는 변수
+                    ※ 매핑하지 않으면 에러 표시 및 "XXX DataTable is not assigned"이라는 메시지가 출력된다.
+                    ※ 해당 Step을 선택했을 시 하단에 나오는 Step 영역에서
+                       Assigned DataTable에 Data Info에 있는 테이블을 드래그 & 드랍하면
+                       테이블이 매핑되고 오류 메시지가 사라진다.
                 </pre>
             </li>
             <li>Step 생성하기
@@ -355,9 +370,9 @@
                   ● Call
                     1. 왼쪽 트리에서 호출하고 싶은 BR/DA를 선택하여 Start와 End 사이에 Drag&Drop
                     2. 호출할 BR/DA 선택시 좌측 하단에 나오는 INPUT/OUTPUT 파라미터 정보를 해당 서비스의 DataInfo 쪽에 Drag&Drop
-                       (매핑하지 않으면 에러 표시 및 "XXX DataTable is not assigned"이라는 메시지가 출력)
+                       (매핑하지 않으면 에러 표시 및 "XXX DataTable is not assigned"이라는 메시지가 출력된다.)
                     3. Apply 클릭
-                
+                    
                   ● IF 
                     1. Start와 End 사이의 구간에서 IF 로직이 필요한 곳을 우클릭
                     2. Add IF Step 클릭
@@ -376,7 +391,7 @@
                   ● Loop
                     1. Start와 End 사이의 구간에서 Loop 로직이 필요한 곳을 우클릭
                     2. Add Loop Step 클릭
-                    3. DataTable의 Index 우클릭 → Add Index 클릭 → 사용할 인덱스명 입력 → OK 클릭
+                    3. Data Info의 Index 우클릭 → Add Index 클릭 → 사용할 인덱스명 입력 → OK 클릭
                     4. Condition에 반복 조건 입력
                     5. 하단의 Index Definition에서 3단계에서 생성한 인덱스 선택 → 초기값 및 증감값 입력
                     6. true 화살표의 끝에 반복할 로직 Step 추가 (Call, Script 등등) → 추가한 Step의 화살표를 Loop Step으로 연결
@@ -412,11 +427,98 @@
                     2. Add Point Step 클릭
                     3. 아래의 Step 영역에서 Comment 입력 후 차트 영역 클릭
                     ※ 연결하기 애매한 구간에 Point Step을 추가해 보기 편하게 선을 연결할수도 있다.
+                </pre>
+            </li>
+            <li>Call Step의 옵션
+                <pre>
+                    ● 트랜잭션 분리
+                      1. 트랜잭션을 분리하고자 하는 Call Step 클릭
+                      2. 하단 영역에 있는 체크박스 중에서 <div class="colorRed">Txn</div> 체크
+                      3. Commit 또는 Rollback 을 하고 싶은 곳에 Script Step 을 추가
+                      4. 해당 Script Step에 상황에 맞는 메소드 호출 코드 작성
+                        ○ Commit 호출 : BatchCommit();
+                        ○ Rollback 호출 : BatchRollback();
 
-                  ※ Point Step을 통하여 로직 구조 설계하기
+                    ● USE REFERENCE
+                      1. Data Reference로 전달하려는 Step 을 선택
+                      2. 하단 영역에 있는 체크박스 중에서 <div class="colorRed">Ref</div> 체크
+                      ○ 기능 : 호출되는 Call Step 내부로 DataSet 을 Reference 형태로 전달
+                      ○ 주의점
+                        (1) 하나의 테이블 / 동일한 컬럼명을 가진 경우에만 사용 가능
+                        (2) Multi 테이블 Mapping / 다른 컬럼 Mapping / 행 단위 사용 불가
+                        (3) 호출하는 Business Rule 의 컬럼 중 일부가 호출당하는 BR 에서 누락되어 있는 경우는 허용
+
+                    ● 오류 무시
+                      1. 오류가 발생하더라도 해당 오류를 무시하고 Main Flow를 진행시키게 하려는 Call Step 선택
+                      2. 하단 영역에 있는 체크박스 중에서 <div class="colorRed">Ignore</div> 체크
+                      3. 해당 Call Step을 처리한 직후 Data Info의 System의 RsltNUm이 -1인 경우 사용자 오류 처리 로직 수행
+                      4. Data Info의 System의 RsltMsg에 저장된 Exception 내용 확인 (DebugPrint(RsltMsg);)
+
+                    ● 페이징
+                      1. 페이징 기능을 사용하고자 하는 Call Step 클릭
+                      2. 하단 영역에 있는 체크박스 중에서 <div class="colorRed">Page</div> 체크
+
+                    ● ASSIGN ONLY THE FIRST ROW
+                      1. ASSIGN ONLY THE FIRST ROW 기능을 사용하고자 하는 Call Step 클릭
+                      2. 하단 영역에 있는 체크박스 중에서 <div class="colorRed">First</div> 체크
+                      ○ 기능 : Call Step 에서 Input Data 를 맵핑할 때, DataTable 의 첫번째 Row 데이터만 Assign 시키기
+
+                    ● QUERY TIMEOUT
+                      1. Query Timeout 을 설정하고자 하는 Call Step 클릭
+                      2. 하단 영역에 있는 Query Timeout 시간을 초 단위로 설정 (0으로 입력시  Query Timeout 미사용)
+                      ○ 주의점 : Call Step 에서 DataAccess Service 를 호출하는 경우 설정 가능
+                </pre>
+            </li>
+            <li>Point Step을 통하여 로직 구조 설계하기
+                <pre>
                     1. Point Step으로 로직 구조를 설계
                     2. 해당 Point Step을 우클릭
                     3. Replace with XXX Step을 클릭하여 실제 사용할 Step으로 대체
+                </pre>
+            </li>
+            <li>Step에 대한 추가 사용법
+                <pre>
+                    ● Call Step을 우클릭하고 "Copy With Data"를 선택하면 매핑되있는 Data Table까지 복사할 수 있다.
+                    ● Call Step을 활성/비활성 처리 하고 싶을 때는 해당 Step을 우클릭하고 "Enable/Disable"을 선택하면 된다.
+                    ● 각 Step은 우클릭 후 "Replace With XXX Step" 메뉴를 통해서 다른 Step으로 교체할 수 있다.
+                    ● 각 Step을 연결하는 연결선을 우클릭하고 "Fix/Unfix Start/End Point" 메뉴를 통해서
+                      각각의 Step의 연결되있는 시작/종료 지점에 대해서 고정하는 기능을 활성화/비활성화 시킬수 있다.
+                      (해당 기능 활성화 시 연결되있는 Step의 위치를 변경해도 Point의 위치는 변경되지 않는다.)
+                </pre>
+            </li>
+            <li>Save & Load
+                <pre>
+                    ● 서비스를 파일로 저장하기
+                      1. Flow 영역 밑의 Others를 클릭
+                      2. "Save Temp"를 클릭
+                      3. 저장 위치와 파일명을 지정한 후 저장 (저장 형식은 xml 고정)
+
+                    ● 파일로 저장된 서비스를 불러오기
+                      1. Flow 영역 밑의 Others를 클릭
+                      2. "Load Temp"를 클릭
+                      3. 작업 영역에 불러올 서비스 파일을 선택
+                      4. 정상적으로 불러와지면 "Apply&Test" 버튼과 "Apply" 버튼이 빨간색으로 바뀐다.
+                      ※ 동일한 서비스만 불러올수 있다.
+                      ※ 서비스 정보가 다를 경우에는 오류가 발생한다.
+                </pre>
+            </li>
+            <li>순서도의 흐름 오류 검사하기
+                <pre>
+                    1. Flow 영역 밑의 Others를 클릭
+                    2. Check를 선택
+                    3. 순서도에 문제 존재시 팝업 발생 (Type ID 또는 Step ID를 알려준다.)
+                </pre>
+            </li>
+            <li>SQL 체크하기
+                <pre>
+                    1. 순서도에 있는 Call Step 중에서 SQL을 확인하고 싶은 <div class="colorRed">DA</div>를 선택
+                    2. 해당 DA를 우클릭
+                    3. View SQL 클릭
+                </pre>
+            </li>
+            <li>xxx
+                <pre>
+                    ● xxx
                 </pre>
             </li>
         </ul>
@@ -608,7 +710,7 @@
     <div id="remote">
       <section id="remote_setcion">
         <select id="remote_menu" onchange="move_section()">
-          <option value="intro">DevOn NCD</option>
+          <!-- <option value="intro">DevOn NCD</option> -->
           <option value="setting">설치 및 실행</option>
           <option value="layer">관리계층</option>
           <option value="service">서비스</option>
@@ -621,7 +723,7 @@
     </div>
 
     <!-- 모달 영역 시작 -->
-    <!-- <div id="xxx" class="modal">
+    <div id="xxx" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
         <span class="modal_title">xxx</span>
@@ -629,7 +731,7 @@
           <p style="margin-left: 30px">xxx</p>
         </div>
       </div>
-    </div> -->
+    </div>
     <!-- 모달 영역 종료 -->
   </body>
 
